@@ -9,12 +9,18 @@ python3 scanner.py
 4.	Sigue las instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.
 
 Funcionalidades
-•	Escaneo de puertos utilizando nmap.
+
+
+•Escaneo de puertos utilizando nmap.
+
 •	Visualización de puertos abiertos.
+
 •	Selección de puerto para obtener detalles adicionales.
+
 •	Generación de un reporte de seguridad en un archivo de texto.
+
 Contribuciones
 Las contribuciones son bienvenidas. Si encuentras algún problema o tienes alguna mejora, no dudes en abrir un issue o enviar un pull request.
-Autor
+
 Este proyecto fue desarrollado por M0r3n0SVQ.
 
