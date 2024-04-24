@@ -85,3 +85,5 @@ with open(nombre_archivo, "w") as archivo:
     archivo.write(reporte_seguridad)
 
 print(f"\nReporte de seguridad guardado en el archivo: {nombre_archivo}")
+# Solicitar al usuario que presione una tecla para salir
+input("\nPresiona Enter para salir...")
