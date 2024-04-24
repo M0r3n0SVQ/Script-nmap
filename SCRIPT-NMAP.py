@@ -2,6 +2,7 @@
 
 import nmap
 import subprocess
+import platform
 
 print('''
   __  __  ___      ____         ___   _______      ______  
@@ -53,14 +54,20 @@ while numero_puerto < 1 or numero_puerto > len(puertos_abiertos):
 # Obtener el puerto seleccionado por el usuario
 puerto_seleccionado = puertos_abiertos[numero_puerto - 1]
 
+# Determinar el sistema operativo
+sistema_operativo = platform.system()
+
 # Comando para obtener información detallada del puerto seleccionado
-comando_netstat_puerto = f"netstat -tuln | grep {puerto_seleccionado}"
+if sistema_operativo == "Windows":
+    comando_netstat_puerto = f"netstat -an | findstr LISTENING | findstr :{puerto_seleccionado}"
+else:
+    comando_netstat_puerto = f"netstat -tuln | grep {puerto_seleccionado}"
 
 # Ejecutar el comando y obtener la salida
 salida_netstat_puerto = subprocess.run(comando_netstat_puerto, shell=True, capture_output=True, text=True)
 
 # Mostrar los detalles del puerto seleccionado por pantalla
-print(f"\nDetalles del puerto {puerto_seleccionado}:")
+print(f"\nDetalles del puerto {puerto_seleccionado} en sistemas {sistema_operativo}:")
 print(salida_netstat_puerto.stdout)
 
 # Función para generar el reporte de seguridad
