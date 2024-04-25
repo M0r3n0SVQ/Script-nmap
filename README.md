@@ -12,11 +12,17 @@ Este proyecto consiste en un script Python que utiliza la biblioteca nmap para r
 
     cd Script-nmap
 
-4. **Ejecutar el Script:** Ejecuta el script Python:
+4. **Ejecutar el Script:**
 
-    python3 scanner.py
+   **Linux**
+   
+   python3 SCRIPT-NMAP.py
 
-5. **Sigue las Instrucciones:** Sigue las instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.
+   **Windows**
+   
+   SCRIPT-NMAP.py
+
+6. **Sigue las Instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.**
 
 ## Funcionalidades ✨
 
