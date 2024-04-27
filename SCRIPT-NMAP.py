@@ -68,6 +68,26 @@ else:
 # Ejecutar el comando y obtener la salida
 salida_netstat_puerto = subprocess.run(comando_netstat_puerto, shell=True, capture_output=True, text=True)
 
+def obtener_nombre_proceso(pid, sistema_operativo):
+    if sistema_operativo == "Windows":
+        # Consultar el nombre del proceso en Windows utilizando tasklist
+        try:
+            proceso_info = subprocess.run(f"tasklist /FI \"PID eq {pid}\" /FO CSV", capture_output=True, text=True)
+            nombre_proceso = proceso_info.stdout.split(',')[0].strip('"')  # Extraer el nombre del proceso
+            return nombre_proceso
+        except Exception as e:
+            print(f"Error al obtener el nombre del proceso en Windows: {e}")
+            return None
+    else:
+        # Consultar el nombre del proceso en Linux utilizando ps
+        try:
+            proceso_info = subprocess.run(f"ps -p {pid} -o comm=", capture_output=True, text=True, shell=True)
+            nombre_proceso = proceso_info.stdout.strip()  # Extraer el nombre del proceso
+            return nombre_proceso
+        except Exception as e:
+            print(f"Error al obtener el nombre del proceso en Linux: {e}")
+            return None
+
 # Obtener el PID del proceso asociado al puerto
 if sistema_operativo == "Windows":
     if 'tcp' in results.keys() and puerto_seleccionado in results['tcp']:
@@ -75,31 +95,50 @@ if sistema_operativo == "Windows":
     else:
         pid_proceso = None
 else:
-    pid_proceso = int(salida_netstat_puerto.stdout.split()[6])
+    # Manejar diferentes formatos de salida de netstat según el sistema operativo
+    netstat_output = salida_netstat_puerto.stdout.split('\n')
+    for line in netstat_output:
+        if f":{puerto_seleccionado}" in line:
+            parts = line.split()
+            if len(parts) >= 7:
+                pid_proceso = parts[6]
+                break
+    else:
+        pid_proceso = None
 
 # Mostrar los detalles del puerto seleccionado por pantalla
 print(f"\nDetalles del puerto {puerto_seleccionado} en sistemas {sistema_operativo}:")
 print(salida_netstat_puerto.stdout)
 
-# Función para generar el reporte de seguridad
-def generar_reporte(puerto, detalles, pid):
-    reporte = f"Detalles del puerto {puerto}:\nPID del proceso: {pid}\n{detalles}"
-    return reporte
+# Obtener el nombre del proceso asociado al PID
+nombre_proceso = obtener_nombre_proceso(pid_proceso, sistema_operativo)
+
+# Mostrar el nombre del proceso si se obtiene
+if nombre_proceso:
+    print(f"Nombre del proceso asociado al puerto: {nombre_proceso}")
+else:
+    print("No se pudo obtener el nombre del proceso asociado al puerto.")
 
 # Generar el reporte de seguridad
-reporte_seguridad = generar_reporte(puerto_seleccionado, salida_netstat_puerto.stdout, pid_proceso)
+reporte_seguridad = f"Detalles del puerto {puerto_seleccionado}:\n"
+reporte_seguridad += f"PID del proceso: {pid_proceso}\n"
+reporte_seguridad += salida_netstat_puerto.stdout
 
 # Obtener la fecha actual
 fecha_actual = datetime.now().strftime("%Y-%m-%d")
 
-# Directorio del escritorio según el sistema operativo
+# Obtener la ruta del escritorio según el sistema operativo
 if sistema_operativo == "Windows":
-    directorio_escritorio = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+    ruta_escritorio = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
 else:
-    directorio_escritorio = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
+    ruta_escritorio = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
+
+# Verificar si el directorio del escritorio existe, si no, crearlo
+if not os.path.exists(ruta_escritorio):
+    os.makedirs(ruta_escritorio)
 
 # Ruta del archivo para el reporte en el escritorio
-ruta_reporte = os.path.join(directorio_escritorio, f"reporte_seguridad_{fecha_actual}.txt")
+ruta_reporte = os.path.join(ruta_escritorio, f"reporte_seguridad_{fecha_actual}.txt")
 
 # Escribir el reporte en el archivo
 with open(ruta_reporte, "w") as archivo:
