@@ -20,7 +20,7 @@ Este proyecto consiste en un script Python que utiliza la biblioteca nmap para r
 
    **Windows**
    
-   SCRIPT-NMAP.py
+   py SCRIPT-NMAP.py
 
 4. **Sigue las Instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.**
 
