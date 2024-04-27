@@ -17,6 +17,9 @@ print('''
                                                            
 ''')
 
+# Obtener la ruta del directorio del script
+ruta_script = os.path.dirname(os.path.abspath(__file__))
+
 # Solicitar al usuario que ingrese la dirección IP a escanear
 ip = input("Ingresa la IP a escanear: ")
 
@@ -124,21 +127,16 @@ reporte_seguridad = f"Detalles del puerto {puerto_seleccionado}:\n"
 reporte_seguridad += f"PID del proceso: {pid_proceso}\n"
 reporte_seguridad += salida_netstat_puerto.stdout
 
-# Obtener la fecha actual
+# Ruta del directorio para los reportes
+ruta_reportes = os.path.join(ruta_script, "reportes")
+
+# Verificar si el directorio de reportes existe, si no, crearlo
+if not os.path.exists(ruta_reportes):
+    os.makedirs(ruta_reportes)
+
+# Ruta del archivo para el reporte en la carpeta de reportes
 fecha_actual = datetime.now().strftime("%Y-%m-%d")
-
-# Obtener la ruta del escritorio según el sistema operativo
-if sistema_operativo == "Windows":
-    ruta_escritorio = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
-else:
-    ruta_escritorio = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
-
-# Verificar si el directorio del escritorio existe, si no, crearlo
-if not os.path.exists(ruta_escritorio):
-    os.makedirs(ruta_escritorio)
-
-# Ruta del archivo para el reporte en el escritorio
-ruta_reporte = os.path.join(ruta_escritorio, f"reporte_seguridad_{fecha_actual}.txt")
+ruta_reporte = os.path.join(ruta_reportes, f"reporte_seguridad_{fecha_actual}.txt")
 
 # Escribir el reporte en el archivo
 with open(ruta_reporte, "w") as archivo:
