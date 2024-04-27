@@ -24,7 +24,7 @@ Este proyecto consiste en un script Python que utiliza la biblioteca nmap para r
 
 4. **Sigue las Instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.**
 
-5. ## Detener Servicios en Windows
+## Detener Servicios en Windows
 
 Cuando seleccionamos el puerto, nos mostrará por pantalla los detalles del puerto y un numero a la derecha que es el ID del proceso.
 Podemos parar el proceso utilizando el administrador de tareas de Windows, lo podemos abrir con CTRL + Mayús + ESC, una vez abierto seleccionamos la pestaña Servicios, en la parte superior nos sale un buscador para ver que proceso está asociado al puerto, si es un proceso que no reconocemos podemos detenerlo ya que
