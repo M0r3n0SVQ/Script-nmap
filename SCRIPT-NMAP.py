@@ -3,6 +3,8 @@
 import nmap
 import subprocess
 import platform
+import os
+from datetime import datetime
 
 print('''
 
@@ -14,7 +16,6 @@ print('''
  |_|  |_|\\___/|_| |____/|_| |_|\\___/|_____/    \\/   \\___\\_\\
                                                            
 ''')
-
 
 # Solicitar al usuario que ingrese la dirección IP a escanear
 ip = input("Ingresa la IP a escanear: ")
@@ -60,30 +61,54 @@ sistema_operativo = platform.system()
 
 # Comando para obtener información detallada del puerto seleccionado
 if sistema_operativo == "Windows":
-    comando_netstat_puerto = f"netstat -an | findstr LISTENING | findstr :{puerto_seleccionado}"
+    comando_netstat_puerto = f"netstat -ano | findstr LISTENING | findstr :{puerto_seleccionado}"
 else:
     comando_netstat_puerto = f"netstat -tuln | grep {puerto_seleccionado}"
 
 # Ejecutar el comando y obtener la salida
 salida_netstat_puerto = subprocess.run(comando_netstat_puerto, shell=True, capture_output=True, text=True)
 
+# Obtener el PID del proceso asociado al puerto
+if sistema_operativo == "Windows":
+    if 'tcp' in results.keys() and puerto_seleccionado in results['tcp']:
+        pid_proceso = int(results['tcp'][puerto_seleccionado]['pid'])
+    else:
+        pid_proceso = None
+else:
+    pid_proceso = int(salida_netstat_puerto.stdout.split()[6])
+
 # Mostrar los detalles del puerto seleccionado por pantalla
 print(f"\nDetalles del puerto {puerto_seleccionado} en sistemas {sistema_operativo}:")
 print(salida_netstat_puerto.stdout)
 
 # Función para generar el reporte de seguridad
-def generar_reporte(puerto, detalles):
-    reporte = f"Detalles del puerto {puerto}:\n{detalles}"
+def generar_reporte(puerto, detalles, pid):
+    reporte = f"Detalles del puerto {puerto}:\nPID del proceso: {pid}\n{detalles}"
     return reporte
 
 # Generar el reporte de seguridad
-reporte_seguridad = generar_reporte(puerto_seleccionado, salida_netstat_puerto.stdout)
+reporte_seguridad = generar_reporte(puerto_seleccionado, salida_netstat_puerto.stdout, pid_proceso)
 
-# Escribir el reporte en un archivo de texto
-nombre_archivo = "reporte_seguridad.txt"
-with open(nombre_archivo, "w") as archivo:
+# Obtener la fecha actual
+fecha_actual = datetime.now().strftime("%Y-%m-%d")
+
+# Directorio del escritorio según el sistema operativo
+if sistema_operativo == "Windows":
+    directorio_escritorio = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop')
+else:
+    directorio_escritorio = os.path.join(os.path.join(os.path.expanduser('~')), 'Desktop')
+
+# Ruta del archivo para el reporte en el escritorio
+ruta_reporte = os.path.join(directorio_escritorio, f"reporte_seguridad_{fecha_actual}.txt")
+
+# Escribir el reporte en el archivo
+with open(ruta_reporte, "w") as archivo:
     archivo.write(reporte_seguridad)
 
-print(f"\nReporte de seguridad guardado en el archivo: {nombre_archivo}")
+print(f"\nReporte de seguridad guardado en el archivo: {ruta_reporte}")
+
 # Solicitar al usuario que presione una tecla para salir
 input("\nPresiona Enter para salir...")
+
+
+

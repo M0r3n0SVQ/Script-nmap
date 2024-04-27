@@ -8,11 +8,11 @@ Este proyecto consiste en un script Python que utiliza la biblioteca nmap para r
 
     git clone https://github.com/M0r3n0SVQ/Script-nmap.git
 
-3. **Navegar al Directorio:** Navega al directorio del repositorio:
+2. **Navegar al Directorio:** Navega al directorio del repositorio:
 
     cd Script-nmap
 
-4. **Ejecutar el Script:**
+3. **Ejecutar el Script:**
 
    **Linux**
    
@@ -22,7 +22,13 @@ Este proyecto consiste en un script Python que utiliza la biblioteca nmap para r
    
    SCRIPT-NMAP.py
 
-6. **Sigue las Instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.**
+4. **Sigue las Instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.**
+
+5. ## Detener Servicios en Windows
+
+Cuando seleccionamos el puerto, nos mostrará por pantalla los detalles del puerto y un numero a la derecha que es el ID del proceso.
+Podemos parar el proceso utilizando el administrador de tareas de Windows, lo podemos abrir con CTRL + Mayús + ESC, una vez abierto seleccionamos la pestaña Servicios, en la parte superior nos sale un buscador para ver que proceso está asociado al puerto, si es un proceso que no reconocemos podemos detenerlo ya que
+podría tratarse de un proceso malicioso de parte de un ataque.
 
 ## Funcionalidades ✨
 
