@@ -5,6 +5,7 @@ import subprocess
 import platform
 import os
 from datetime import datetime
+import psutil
 
 print('''
 
@@ -71,56 +72,42 @@ else:
 # Ejecutar el comando y obtener la salida
 salida_netstat_puerto = subprocess.run(comando_netstat_puerto, shell=True, capture_output=True, text=True)
 
-def obtener_nombre_proceso(pid, sistema_operativo):
-    if sistema_operativo == "Windows":
-        # Consultar el nombre del proceso en Windows utilizando tasklist
-        try:
-            proceso_info = subprocess.run(f"tasklist /FI \"PID eq {pid}\" /FO CSV", capture_output=True, text=True)
-            nombre_proceso = proceso_info.stdout.split(',')[0].strip('"')  # Extraer el nombre del proceso
-            return nombre_proceso
-        except Exception as e:
-            print(f"Error al obtener el nombre del proceso en Windows: {e}")
-            return None
-    else:
-        # Consultar el nombre del proceso en Linux utilizando ps
-        try:
-            proceso_info = subprocess.run(f"ps -p {pid} -o comm=", capture_output=True, text=True, shell=True)
-            nombre_proceso = proceso_info.stdout.strip()  # Extraer el nombre del proceso
-            return nombre_proceso
-        except Exception as e:
-            print(f"Error al obtener el nombre del proceso en Linux: {e}")
-            return None
+# Función para obtener el PID del proceso asociado al puerto utilizando psutil
+def obtener_pid_por_puerto(numero_puerto):
+    for conn in psutil.net_connections(kind='inet'):
+        if conn.laddr.port == numero_puerto:
+            return conn.pid
+    return None
 
 # Obtener el PID del proceso asociado al puerto
-if sistema_operativo == "Windows":
-    if 'tcp' in results.keys() and puerto_seleccionado in results['tcp']:
-        pid_proceso = int(results['tcp'][puerto_seleccionado]['pid'])
-    else:
-        pid_proceso = None
-else:
-    # Manejar diferentes formatos de salida de netstat según el sistema operativo
-    netstat_output = salida_netstat_puerto.stdout.split('\n')
-    for line in netstat_output:
-        if f":{puerto_seleccionado}" in line:
-            parts = line.split()
-            if len(parts) >= 7:
-                pid_proceso = parts[6]
-                break
-    else:
-        pid_proceso = None
+pid_proceso = obtener_pid_por_puerto(puerto_seleccionado)
 
-# Mostrar los detalles del puerto seleccionado por pantalla
-print(f"\nDetalles del puerto {puerto_seleccionado} en sistemas {sistema_operativo}:")
-print(salida_netstat_puerto.stdout)
+# Función para obtener el nombre del proceso asociado al PID utilizando psutil
+def obtener_nombre_proceso(pid):
+    try:
+        proceso = psutil.Process(pid)
+        nombre_proceso = proceso.name()
+        return nombre_proceso
+    except psutil.NoSuchProcess:
+        return None
+    except psutil.AccessDenied:
+        return "Acceso denegado"
+    except Exception as e:
+        print(f"Error al obtener el nombre del proceso: {e}")
+        return None
 
 # Obtener el nombre del proceso asociado al PID
-nombre_proceso = obtener_nombre_proceso(pid_proceso, sistema_operativo)
+nombre_proceso = obtener_nombre_proceso(pid_proceso)
 
 # Mostrar el nombre del proceso si se obtiene
 if nombre_proceso:
     print(f"Nombre del proceso asociado al puerto: {nombre_proceso}")
 else:
     print("No se pudo obtener el nombre del proceso asociado al puerto.")
+
+# Mostrar los detalles del puerto seleccionado por pantalla
+print(f"\nDetalles del puerto {puerto_seleccionado} en sistemas {sistema_operativo}:")
+print(salida_netstat_puerto.stdout)
 
 # Generar el reporte de seguridad
 reporte_seguridad = f"Detalles del puerto {puerto_seleccionado}:\n"
@@ -130,11 +117,11 @@ reporte_seguridad += salida_netstat_puerto.stdout
 # Ruta del directorio para los reportes
 ruta_reportes = os.path.join(ruta_script, "reportes")
 
-# Verificar si el directorio de reportes existe, si no, crearlo
+# Verificar si el directorio de reportes existe, si no existe, crearlo
 if not os.path.exists(ruta_reportes):
     os.makedirs(ruta_reportes)
 
-# Ruta del archivo para el reporte en la carpeta de reportes
+# Ruta del archivo reporte en la carpeta de reportes
 fecha_actual = datetime.now().strftime("%Y-%m-%d")
 ruta_reporte = os.path.join(ruta_reportes, f"reporte_seguridad_{fecha_actual}.txt")
 
