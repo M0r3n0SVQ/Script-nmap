@@ -2,6 +2,8 @@
 
 Este proyecto consiste en un script Python que utiliza la biblioteca nmap para realizar un escaneo de puertos en una dirección IP especificada por el usuario. Además, permite al usuario seleccionar un puerto específico para obtener detalles adicionales.
 
+Se creará una carpeta llamada reportes en la ruta donde se encuentre el script que guardará el reporte generado.
+
 ## Descargar Python ✅
 
 1. **Actualizar repositorios**
