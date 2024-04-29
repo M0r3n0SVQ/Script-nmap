@@ -31,15 +31,15 @@ Se creará una carpeta llamada reportes en la ruta donde se encuentre el script 
 
 ## Descargar script 🚀
 
-1. **Clonar el Repositorio:** Clona este repositorio en tu máquina local:
+1. **Clonar el Repositorio** 
 
     git clone https://github.com/M0r3n0SVQ/Script-nmap.git
 
-2. **Navegar al Directorio:** Navega al directorio del repositorio:
+2. **Navegar al Directorio** 
 
     cd Script-nmap
 
-3. **Ejecutar el Script:**
+3. **Ejecutar el Script**
 
    **Linux**
    
