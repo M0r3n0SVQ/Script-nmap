@@ -16,13 +16,14 @@ Se creará una carpeta llamada reportes en la ruta donde se encuentre el script 
 2. **Instalar Python3**
 
         sudo apt install python3
+   **Para instalar Python 3 en Windows tenemos que descargarnos el instalador desde: https://www.python.org/ftp/python/3.12.3/python-3.12.3-amd64.exe**
    
 4.  **Instalar nmap**
 
         pip install python-nmap
-      
+    **Para instalar nmap en Windows o Linux tenemos que introducir el comando de arriba en el CMD (Windows) o en el terminal (Linux).**        
 
-5. **Instalar módulo psutil**
+6. **Instalar módulo psutil**
 
     Proporciona información sobre los procesos en ejecución y la utilización del sistema.
 
