@@ -8,20 +8,25 @@ Se creará una carpeta llamada reportes en la ruta donde se encuentre el script 
 
 1. **Actualizar repositorios**
 
-    sudo apt update
+        sudo apt update
 
 
-    sudo apt upgrade
+        sudo apt upgrade
 
 2. **Instalar Python3**
 
-    sudo apt install python3
+        sudo apt install python3
+   
+4.  **Instalar nmap**
 
-3. **Instalar módulo psutil**
+        sudo apt install nmap
+      
+
+5. **Instalar módulo psutil**
 
     Proporciona información sobre los procesos en ejecución y la utilización del sistema.
 
-    pip install psutil
+        pip install psutil
 
 
 ## Descargar script 🚀
