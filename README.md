@@ -34,21 +34,21 @@ Se creará una carpeta llamada reportes en la ruta donde se encuentre el script 
 
 1. **Clonar el Repositorio** 
 
-    git clone https://github.com/M0r3n0SVQ/Script-nmap.git
+        git clone https://github.com/M0r3n0SVQ/Script-nmap.git
 
 2. **Navegar al Directorio** 
 
-    cd Script-nmap
+        cd Script-nmap
 
 3. **Ejecutar el Script**
 
    **Linux**
    
-   python3 SCRIPT-NMAP.py
+        python3 SCRIPT-NMAP.py
 
    **Windows**
    
-   py SCRIPT-NMAP.py
+        py SCRIPT-NMAP.py
 
 4. **Sigue las Instrucciones en pantalla para ingresar la dirección IP y seleccionar un puerto para obtener detalles de seguridad.**
 
@@ -65,13 +65,14 @@ Cuando necesites detener un servicio asociado a un puerto en Linux, puedes segui
 
 1. **Si al ejecutar el script sobre el puerto deseado y no muesta el proceso podemos intentar averiguarlo con el comando:**
    
-   netstat -tuln
+        netstat -tuln
+**O**
    
-   ss -tuln
+        ss -tuln
 
-2. **Detener el proceso: Una vez que hayas identificado el PID del proceso que deseas detener, utiliza el comando kill seguido del PID para detener el proceso.**
+3. **Detener el proceso: Una vez que hayas identificado el PID del proceso que deseas detener, utiliza el comando kill seguido del PID para detener el proceso.**
 
-    sudo kill PID_del_proceso
+        sudo kill PID_del_proceso
 
 ## Funcionalidades ✨
 
@@ -91,5 +92,3 @@ Las contribuciones son bienvenidas. Si encuentras algún problema o tienes algun
 ## Autor
 
 Este proyecto fue desarrollado por [M0r3n0SVQ](https://github.com/M0r3n0SVQ).
-
----
