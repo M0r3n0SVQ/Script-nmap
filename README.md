@@ -19,7 +19,7 @@ Se creará una carpeta llamada reportes en la ruta donde se encuentre el script 
    
 4.  **Instalar nmap**
 
-        sudo apt install nmap
+        pip install python-nmap
       
 
 5. **Instalar módulo psutil**
